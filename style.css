@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #222;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.game-container {
+    position: relative;
+    width: 600px;
+    height: 200px;
+    background-color: #ffc043f4; /* Fondo de .game-container */
+    overflow: hidden;
+}
+
+.scene-container {
+    background-color: #da8e02bf;
+    width: 700px;
+    height: 500px;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Para que el efecto de caída no se salga del contenedor */
+}
+
+/* Animación para simular la caída */
+@keyframes caida {
+    0% {
+        transform: translateY(0) translateZ(0); /* Forzar píxeles enteros */
+        opacity: 1;
+        height: 0; /* Altura inicial */
+    }
+    100% {
+        transform: translateY(0) translateZ(0); /* Mantener la posición vertical */
+        height: 150px; /* Altura final */
+        opacity: 1;
+        background-color: #ffc043f9; /* Cambiar el color (opcional) */
+    }
+}
+
+/* Clase para activar la animación */
+.scene-container.eliminar-seccion::before {
+    content: "";
+    position: absolute;
+    top: 350px; /* Posición Y de la sección */
+    left: 450px; /* Posición X de la sección */
+    width: 50px; /* Ancho de la sección */
+    height: 0; /* Altura inicial */
+    background-color: #ffc043f9; /* Mismo color que .game-container */
+    animation: caida 1s forwards; /* Aplicar la animación de caída */
+    will-change: transform, height; /* Optimizar la renderización */
+    backface-visibility: hidden; /* Evitar artefactos visuales */
+    z-index: 1; /* Asegurar que esté por encima del fondo */
+    transform: translateZ(0); /* Forzar aceleración por hardware */
+}
+
+#playerCanvas {
+    position: absolute;
+    bottom: 0;
+    left: 50px;
+    image-rendering: pixelated; /* Hace que el canvas se vea pixelado */
+    z-index: 2; /* Asegurar que esté por encima del pseudo-elemento */
+}
+
+/* Animación de caminar */
+@keyframes walk {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+#playerCanvas.walking {
+    animation: walk 0.2s infinite;
+}
+
+.door {
+    position: absolute;
+    bottom: 0;
+    right: 80px;
+    width: 40px;
+    height: 40px;
+    background-color: rgba(137, 201, 239, 0.989);
+    border-radius: 5px 5px 0px 0px;
+    border: 5px solid #ab7104;
+    border-bottom: none;
+    z-index: 1; /* Asegurar que esté por encima del pseudo-elemento */
+}
+
+.info {
+    margin-top: 20px;
+    text-align: center;
+}
